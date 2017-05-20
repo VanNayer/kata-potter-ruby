@@ -31,6 +31,43 @@ describe Basket, '#price' do
       it('must apply 20% on the first set and 10% on the second') do
         expect(Basket.price([0, 0, 1, 2, 2, 3])).to eq((8 * 4 * 0.8) + (8 * 2 * 0.95))
       end
+
+      context 'must find that set of 4 are best sometimes' do
+        it('must apply 20% on both') { expect(Basket.price([0, 0, 1, 1, 2, 2, 3, 4])).to eq(2 * (8 * 4 * 0.8)) }
+      end
+    end
+
+    context 'WTF!' do
+      it('must do 3 set of 5 and 2 sets of 4!') do
+        expect(Basket.price([0, 0, 0, 0, 0,
+                             1, 1, 1, 1, 1,
+                             2, 2, 2, 2,
+                             3, 3, 3, 3, 3,
+                             4, 4, 4, 4])).to eq(3 * (8 * 5 * 0.75) + 2 * (8 * 4 * 0.8))
+      end
+    end
+  end
+
+  context 'tests of the internet!' do
+    it('must pass') do
+      expect(Basket.price([])).to eq(0)
+      expect(Basket.price([0])).to eq(8)
+      expect(Basket.price([1])).to eq(8)
+      expect(Basket.price([2])).to eq(8)
+      expect(Basket.price([3])).to eq(8)
+      expect(Basket.price([4])).to eq(8)
+      expect(Basket.price([0, 0])).to eq(8 * 2)
+      expect(Basket.price([1, 1, 1])).to eq(8 * 3)
+      expect(Basket.price([0, 1])).to eq(8 * 2 * 0.95)
+      expect(Basket.price([0, 2, 4])).to eq(8 * 3 * 0.9)
+      expect(Basket.price([0, 1, 2, 4])).to eq(8 * 4 * 0.8)
+      expect(Basket.price([0, 1, 2, 3, 4])).to eq(8 * 5 * 0.75)
+      expect(Basket.price([0, 0, 1])).to eq(8 + (8 * 2 * 0.95))
+      expect(Basket.price([0, 0, 1, 1])).to eq(2 * (8 * 2 * 0.95))
+      expect(Basket.price([0, 0, 1, 2, 2, 3])).to eq((8 * 4 * 0.8) + (8 * 2 * 0.95))
+      expect(Basket.price([0, 1, 1, 2, 3, 4])).to eq(8 + (8 * 5 * 0.75))
+      expect(Basket.price([0, 0, 1, 1, 2, 2, 3, 4])).to eq(2 * (8 * 4 * 0.8))
+      expect(Basket.price([0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4])).to eq(3 * (8 * 5 * 0.75) + 2 * (8 * 4 * 0.8))
     end
   end
 end
